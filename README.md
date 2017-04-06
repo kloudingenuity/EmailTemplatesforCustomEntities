@@ -1,0 +1,58 @@
+<div class="wikidoc">
+<h1>Project Description</h1>
+<p>Email templates save time when creating multiple email messages. Email templates contain prefilled data that we specify, so we don&rsquo;t have to reenter the same information again. Specifying dynamic values from out of the box entities is pretty simple
+ but there are some instances when we might want to add dynamic values for custom entities. To which we don&rsquo;t have any straightforward approach in CRM as we cannot add custom entity in email template.<br>
+<br>
+This solution is designed to address the above stated problem. It uses Global Templates and a workaround approach to define custom entity attributes within the template. This can be installed using standard CRM import process.</p>
+<h1>Define Email Template for Custom Entity</h1>
+<ol>
+<li>Create an email template by selecting Template Type as Global. </li><li><img title="KLI_01.png" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=emailtemplatesforcustomentities&DownloadId=1632388" alt="KLI_01.png">
+</li><li>Define dynamic values of custom entity using the pattern <strong>{!&lt;Entity Logical Name&gt;:&lt;Attribute Logical Name&gt;; &lt;Default Value&gt;}</strong>. Default value is optional in this pattern. When Attribute value is null it will be replaced with
+ Default Value.<br>
+<br>
+Eg: {!new_customentity:new_customattribute;Default Text}<br>
+<br>
+Defining the text fields are easy enough and above pattern works for most of the field types. Refer below table for complex field types.<br>
+<img title="KLI_02.png" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=emailtemplatesforcustomentities&DownloadId=1632389" alt="KLI_02.png">
+</li><li>Define dynamic values of related entities (for the Custom Entity defined in step-3) using the pattern
+<strong>{!Related!&lt;Primary Attribute Logical Name&gt;:&lt;Related Attribute Logical Name&gt;; &lt;Default Value&gt;}</strong><br>
+<br>
+Eg: {!Related!PrimaryContactId:EmailAddress1;sample@sample.com}<br>
+<br>
+</li><li>There could be some scenarios where we might have to set some dynamic values which might not be coming from Primary/Related entities. In such case define the values using the pattern
+<strong>{!Custom:&lt;Label&gt;;}</strong>. The value for this will be specified in the workflow activity.<br>
+<br>
+Eg: {!Custom:Description;} </li></ol>
+<h1>Send Email using Template</h1>
+<p><strong>Send Email using the Custom Workflow Activity:</strong><br>
+Our solution provides a custom workflow activity &ldquo;SendEmail&rdquo; which can be called from any CRM process.</p>
+<ol>
+<li>Add Send Email step in the process. </li><li><img title="KLI_03.png" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=emailtemplatesforcustomentities&DownloadId=1632402" alt="KLI_03.png">
+</li><li><img title="KLI_04.png" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=emailtemplatesforcustomentities&DownloadId=1632403" alt="KLI_04.png">
+</li><li>Define properties for the Send Email step. </li><li><img title="KLI_05.png" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=emailtemplatesforcustomentities&DownloadId=1632392" alt="KLI_05.png">
+</li><li><img title="KLI_06.png" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=emailtemplatesforcustomentities&DownloadId=1632393" alt="KLI_06.png">
+</li></ol>
+<h1>Send Email using the custom Action</h1>
+<p>Our solution provides a custom action <strong>&ldquo;kli_SendEmail&rdquo;</strong> which can be called from JavaScript, Plugins, custom applications etc. This action internally uses the same custom workflow activity that described earlier.<br>
+<br>
+<strong>Arguments for Action:</strong><br>
+<br>
+<img title="KLI_07.png" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=emailtemplatesforcustomentities&DownloadId=1632394" alt="KLI_07.png"><br>
+This custom action takes three required input arguments. Apart from these three arguments pass Primary entity as Target argument.<br>
+<img title="KLI_08.png" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=emailtemplatesforcustomentities&DownloadId=1632395" alt="KLI_08.png"><br>
+<br>
+<strong>Sample JavaScript to define input parameters:</strong><br>
+<br>
+<img title="KLI_09.png" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=emailtemplatesforcustomentities&DownloadId=1632396" alt="KLI_09.png"><br>
+<br>
+This custom action will return three parameters.<br>
+<img title="KLI_10.png" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=emailtemplatesforcustomentities&DownloadId=1632397" alt="KLI_10.png"></p>
+<h1>Limitations</h1>
+<ol>
+<li>Currently this solution supports only one level of relationship. To get the grandchild values are not possible using the pattern defined. Only parent and child are possible.
+</li></ol>
+<p><br>
+<br>
+<br>
+</p>
+</div><div class="ClearBoth"></div>
